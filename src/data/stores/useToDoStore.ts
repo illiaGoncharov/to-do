@@ -1,43 +1,24 @@
-import { create } from 'zustand'
-import type { TodoFilter, TodoItem, TodoId } from '../../entities/todo/types'
+import { create } from 'zustand';
 
-interface ToDoState {
-  items: Record<TodoId, TodoItem>
-  order: TodoId[]
-  filter: TodoFilter
+interface Task {
+  id: string;
+  title: string;
+  createdAt: number;
 }
 
-interface ToDoActions {
-  add: (title: string) => void
-  toggle: (id: TodoId) => void
-  remove: (id: TodoId) => void
-  clearCompleted: () => void
-  setFilter: (filter: TodoFilter) => void
-  rename: (id: TodoId, title: string) => void
+interface ToDoStore {
+  tasks: Task[];
+  createTask: (title: string) => void;
+  updateTask: (id: string, title: string) => void;
+  removeTask: (id: string) => void;
 }
 
-interface ToDoSelectors {
-  list: () => TodoItem[]
-  filtered: () => TodoItem[]
-  stats: () => { total: number; active: number; completed: number }
-}
-
-export type ToDoStore = ToDoState & ToDoActions & ToDoSelectors
-
-// Заготовка стора. Реализацию CRUD, фильтров и персиста добавим по уроку.
-export const useToDoStore = create<ToDoStore>(() => ({
-  items: {},
-  order: [],
-  filter: 'all',
-
-  add: () => {},
-  toggle: () => {},
-  remove: () => {},
-  clearCompleted: () => {},
-  setFilter: () => {},
-  rename: () => {},
-
-  list: () => [],
-  filtered: () => [],
-  stats: () => ({ total: 0, active: 0, completed: 0 }),
-}))
+export const useToDoStore = create<ToDoStore>((set, get) => ({
+  tasks: [],
+  createTask: (title: string) => {
+    const { tasks } = get();
+    console.log(tasks);
+  },
+  updateTask: (id: string, title: string) => {},
+  removeTask: (id: string) => {},
+}));
